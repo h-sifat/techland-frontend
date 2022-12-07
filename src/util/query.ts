@@ -1,8 +1,8 @@
 import base64 from "base-64";
 import { assert } from "handy-types";
 
-function stringify(query) {
-  assert("plain_object", query, {
+function stringify(query: object) {
+  assert<object>("plain_object", query, {
     message: "Invalid query object.",
     code: "INVALID_QUERY_OBJECT",
   });
@@ -11,8 +11,8 @@ function stringify(query) {
   return `?q=` + encodeURIComponent(base64Json);
 }
 
-function parse(query) {
-  assert("non_empty_string", query, {
+function parse(query: string) {
+  assert<string>("non_empty_string", query, {
     name: "query",
     code: "INVALID_QUERY_STRING",
   });
