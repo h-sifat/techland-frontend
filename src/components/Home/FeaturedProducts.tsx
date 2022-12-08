@@ -5,6 +5,8 @@ import type {
 import { priceUnitMap } from "../../util/product";
 import { useFetchData } from "../../util/hooks";
 import { processFetchedDataState } from "../../util/process-fetched-data";
+import { getPageUrl } from "../../util/url";
+import { Link } from "wouter";
 
 export function FeaturedProducts() {
   const productsState = useFetchData<
@@ -47,20 +49,25 @@ export interface FeaturedProductCard_Argument {
 export function FeaturedProductCard(arg: FeaturedProductCard_Argument) {
   const { name, price, priceUnit, imageUrl } = arg.product;
 
+  const productUrl = getPageUrl({
+    page: "/product",
+    query: { qType: "byIds", ids: [arg.product._id] },
+  });
+
   return (
     <div className="card shadow h-100" style={{ width: "15rem" }}>
-      <a href="#">
+      <Link href={productUrl}>
         <img
           src={imageUrl}
           crossOrigin="anonymous"
           className="card-img-top"
           style={{ height: "10rem", objectFit: "cover" }}
         />
-      </a>
+      </Link>
       <div className="card-body">
-        <a href="#" className="card-text text-decoration-none">
+        <Link href={productUrl} className="card-text text-decoration-none">
           {name}
-        </a>
+        </Link>
       </div>
       <div className="card-footer text-center fw-bold text-light bg-dark">
         {price} {priceUnitMap[priceUnit]}
