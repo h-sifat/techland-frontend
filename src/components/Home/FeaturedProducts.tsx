@@ -7,6 +7,7 @@ import { useFetchData } from "../../util/hooks";
 import { processFetchedDataState } from "../../util/process-fetched-data";
 import { getPageUrl } from "../../util/url";
 import { Link } from "wouter";
+import { config } from "../../config";
 
 export function FeaturedProducts() {
   const productsState = useFetchData<
@@ -50,7 +51,7 @@ export function FeaturedProductCard(arg: FeaturedProductCard_Argument) {
   const { name, price, priceUnit, imageUrl } = arg.product;
 
   const productUrl = getPageUrl({
-    page: "/product",
+    path: config.SINGLE_PRODUCT_PAGE_PATH,
     query: { qType: "byIds", ids: [arg.product._id] },
   });
 

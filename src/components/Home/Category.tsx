@@ -1,6 +1,5 @@
 import { Link } from "wouter";
 import { config } from "../../config";
-import { Query } from "../../util/query";
 import { getPageUrl } from "../../util/url";
 import { CategoryPublicInterface } from "../../interfaces/category";
 
@@ -11,9 +10,10 @@ export function Category(arg: Category_Argument) {
   const { category } = arg;
   const { _id, name, imageUrl } = category;
 
-  const productsByCategoryUrl =
-    getPageUrl({ page: config.PRODUCTS_PAGE_PATH }) +
-    Query.stringify({ qType: "list", categoryId: _id });
+  const productsByCategoryUrl = getPageUrl({
+    path: config.PRODUCTS_PAGE_PATH,
+    query: { qType: "list", categoryId: _id },
+  });
 
   return (
     <div className="shadow bg-body rounded m-2">

@@ -40,8 +40,6 @@ export function SingleProduct() {
   const relatedProductsResult = processFetchedDataState({
     state: relatedProductsState,
     processLoadedData(relatedProducts) {
-      console.log(relatedProducts);
-
       return relatedProducts.map((product) => (
         <RelatedProductCard key={product._id} product={product} />
       ));

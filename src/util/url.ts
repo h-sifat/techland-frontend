@@ -1,4 +1,5 @@
 import { assert } from "handy-types";
+import { config } from "../config";
 import { Query } from "./query";
 
 export interface JoinUrlSegments_Argument {
@@ -20,25 +21,35 @@ export function joinUrlSegments(arg: JoinUrlSegments_Argument) {
   return joined;
 }
 
-export interface GetPageUrl_Argument {
-  page: string | string[];
+export interface GetUrl_Argument {
+  path: string | string[];
   query?: object;
 }
 
-export function getPageUrl(arg: GetPageUrl_Argument) {
-  const { page, query } = arg;
+function makeUrl(arg: GetUrl_Argument & { root: string }) {
+  const { path, root, query } = arg;
 
-  assert<string | string[]>("non_empty_string | non_empty_string[]", page, {
-    name: "page",
+  assert<string | string[]>("non_empty_string | non_empty_string[]", path, {
+    name: "path",
     code: "INVALID_PAGE",
   });
 
-  const segments = [window.location.origin];
-  if (typeof page === "string") segments.push(page);
-  else segments.push(...page);
+  const segments = [root];
+  if (typeof path === "string") segments.push(path);
+  else segments.push(...path);
 
   let url = joinUrlSegments({ segments });
   if (query) url += Query.stringify(query);
 
   return url;
+}
+
+export function getPageUrl(arg: GetUrl_Argument): string {
+  const { path, query } = arg;
+  return makeUrl({ path, query, root: window.location.origin });
+}
+
+export function getApiUrl(arg: GetUrl_Argument) {
+  const { path, query } = arg;
+  return makeUrl({ path, query, root: config.API_ROOT });
 }

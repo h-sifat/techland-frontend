@@ -7,6 +7,8 @@ import { formatError } from "../../util/format-error";
 import { LoadingSpinner } from "../other/LoadingSpinner";
 import { ProductSearchSuggestionDocument } from "../../interfaces/product";
 import { getPageUrl } from "../../util/url";
+import { config } from "../../config";
+import { Link, useLocation } from "wouter";
 
 export interface SearchModal_Argument {
   isShown: boolean;
@@ -22,6 +24,7 @@ const delayedFetchSearchSuggestions = debounce(
 );
 
 export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
+  const [_, navigate] = useLocation();
   const ref = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -47,21 +50,23 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
   }
 
   function closeModalAndResetQuery() {
+    setIsShown(false);
     setSearchResult(null);
     setQuery("");
-    setIsShown(false);
   }
 
   function goToProductsPage(e?: any) {
     if (e) e.preventDefault();
-
     if (!query) return;
+
     closeModalAndResetQuery();
 
-    window.location.href = getPageUrl({
-      page: "/products",
+    const url = getPageUrl({
+      path: config.PRODUCTS_PAGE_PATH,
       query: { qType: "search", query },
     });
+
+    navigate(url);
   }
 
   return (
@@ -104,7 +109,10 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
                 </div>
               </form>
 
-              <SearchSuggestionsList searchResult={searchResult} />
+              <SearchSuggestionsList
+                searchResult={searchResult}
+                onClick={closeModalAndResetQuery}
+              />
 
               {isLoading && (
                 <li className="list-group-item">
@@ -121,9 +129,10 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
 
 export interface SearchSuggestionsList_Argument {
   searchResult: SearchResult | null;
+  onClick(): void;
 }
 export function SearchSuggestionsList(arg: SearchSuggestionsList_Argument) {
-  const { searchResult } = arg;
+  const { searchResult, onClick } = arg;
 
   if (!searchResult) return <> </>;
   if (!searchResult.success)
@@ -135,12 +144,13 @@ export function SearchSuggestionsList(arg: SearchSuggestionsList_Argument) {
     <ul className="list-group">
       {suggestions.map((product) => {
         const productUrl = getPageUrl({
-          page: "/products",
+          path: config.SINGLE_PRODUCT_PAGE_PATH,
           query: { qType: "byIds", ids: [product._id] },
         });
 
         return (
-          <a
+          <Link
+            onClick={onClick}
             href={productUrl}
             key={product._id}
             className="text-decoration-none"
@@ -152,7 +162,7 @@ export function SearchSuggestionsList(arg: SearchSuggestionsList_Argument) {
             >
               {product.name}
             </li>
-          </a>
+          </Link>
         );
       })}
     </ul>
@@ -184,7 +194,7 @@ async function fetchSearchSuggestions(arg: FetchSearchSuggestions_Argument) {
 
   try {
     const result = await api.get<ProductSearchSuggestionDocument[]>({
-      path: "/products",
+      path: config.PRODUCTS_PAGE_PATH,
       query: { qType: "suggestions", query, count: DEFAULT_SUGGESTION_COUNT },
     });
 

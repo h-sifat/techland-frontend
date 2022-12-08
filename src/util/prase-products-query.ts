@@ -22,7 +22,12 @@ export function parseProductsQuery<QueryType>(
   if (!validationResult.success) {
     return {
       success: false,
-      message: formatError(validationResult.error.flatten() as any),
+      message: formatError({
+        errorResponse: {
+          errorType: "validation",
+          error: validationResult.error.flatten(),
+        },
+      }),
     };
   }
 

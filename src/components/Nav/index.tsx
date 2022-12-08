@@ -4,11 +4,11 @@ import { BsSearch } from "react-icons/bs";
 import { GrTechnology } from "react-icons/gr";
 
 export interface NavBar_Argument {
-  onSearchClick?: () => void;
+  onSearchClick: () => void;
 }
 
 export function NavBar(arg: NavBar_Argument) {
-  const { onSearchClick = () => console.log("clicked") } = arg;
+  const { onSearchClick } = arg;
 
   const [collapsed, setCollapsed] = useState(true);
 
@@ -33,10 +33,8 @@ export function NavBar(arg: NavBar_Argument) {
         <div className={collapsibleClassNames}>
           <ul className="navbar-nav me-auto mb-2 mb-sm-0">
             <li className="nav-item">
-              <Link href="/products">
-                <a className="nav-link active" href="/">
-                  Products
-                </a>
+              <Link href="/products" className="nav-link active text-primary">
+                Products
               </Link>
             </li>
           </ul>

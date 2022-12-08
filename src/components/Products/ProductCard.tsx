@@ -3,6 +3,7 @@ import { priceUnitMap } from "../../util/product";
 import { FindResult } from "../../interfaces/product";
 import { getPageUrl } from "../../util/url";
 import { Link } from "wouter";
+import { config } from "../../config";
 
 export interface ProductCard_Argument {
   product: FindResult["products"][number];
@@ -11,8 +12,9 @@ export function ProductCard(arg: ProductCard_Argument) {
   const { product } = arg;
 
   const { name, price, priceUnit, shortDescriptions, imageUrl } = product;
+
   const productUrl = getPageUrl({
-    page: "/product",
+    path: config.SINGLE_PRODUCT_PAGE_PATH,
     query: { qType: "byIds", ids: [product._id] },
   });
 
