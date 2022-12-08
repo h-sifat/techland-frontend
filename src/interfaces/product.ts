@@ -70,3 +70,8 @@ export interface SearchProductsArg {
 export type ListProductsQuery =
   | ({ qType: "list" } & FindProductArg)
   | ({ qType: "search" } & SearchProductsArg);
+
+export type ProductSearchSuggestionDocument = Pick<
+  ProductPublicInterface,
+  "_id" | "name"
+> & { imageUrl: string; score: number };

@@ -12,6 +12,7 @@
     "base-64": "^1.0.0",
     "bootstrap": "^5.2.3",
     "handy-types": "^2.0.0",
+    "lodash": "^4.17.21",
     "object-hash": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/base-64": "^1.0.0",
+    "@types/lodash": "^4.14.191",
     "@types/object-hash": "^3.0.1",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
