@@ -49,3 +49,24 @@ export interface FindResult {
   products: MinifiedPublicProductInterface[];
   categories: Pick<CategoryInterface, "_id" | "name" | "parentId">;
 }
+
+export interface PaginationObject {
+  pageNumber: number;
+  itemsPerPage: number;
+}
+
+export interface FindProductArg {
+  categoryId?: string;
+  pagination?: PaginationObject;
+  sortBy?: { price: "1" | "-1" };
+  priceRange?: { min?: number; max?: number };
+}
+
+export interface SearchProductsArg {
+  query: string;
+  pagination: PaginationObject;
+}
+
+export type ListProductsQuery =
+  | ({ qType: "list" } & FindProductArg)
+  | ({ qType: "search" } & SearchProductsArg);

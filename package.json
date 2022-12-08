@@ -15,7 +15,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
-    "wouter": "^2.9.0"
+    "wouter": "^2.9.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/base-64": "^1.0.0",

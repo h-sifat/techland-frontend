@@ -20,7 +20,6 @@ function parse(query: string) {
   if (!query.startsWith("?q=")) throw new Error(`Invalid query: "${query}"`);
 
   const json = base64.decode(decodeURIComponent(query.slice(3)));
-  console.log(json);
   return JSON.parse(json);
 }
 
