@@ -81,6 +81,7 @@ export function SingleProduct() {
               </div>
             </div>
             <div className="col-12 col-sm-5">
+              <h3 className="fs-4">Similar Products</h3>
               <div className="row">{relatedProductsResult}</div>
             </div>
           </div>

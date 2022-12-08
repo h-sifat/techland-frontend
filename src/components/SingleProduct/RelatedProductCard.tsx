@@ -1,4 +1,3 @@
-import { config } from "../../config";
 import { getPageUrl } from "../../util/url";
 import { priceUnitMap } from "../../util/product";
 import { RelatedProductDocument } from "../../interfaces/product";
@@ -15,7 +14,7 @@ export function RelatedProductCard(arg: RelatedProductCard_Argument) {
   };
 
   const productUrl = getPageUrl({
-    page: config.SINGLE_PRODUCT_PAGE,
+    page: "/products",
     query: { qType: "byIds", ids: [product._id] },
   });
 

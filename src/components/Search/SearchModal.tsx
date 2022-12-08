@@ -135,7 +135,7 @@ export function SearchSuggestionsList(arg: SearchSuggestionsList_Argument) {
     <ul className="list-group">
       {suggestions.map((product) => {
         const productUrl = getPageUrl({
-          page: "/product",
+          page: "/products",
           query: { qType: "byIds", ids: [product._id] },
         });
 
