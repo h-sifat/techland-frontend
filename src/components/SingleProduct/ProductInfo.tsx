@@ -16,7 +16,7 @@ export function ProductInfo(arg: ProductInfo_Argument) {
   //
   return (
     <>
-      <h2 className="fs-5">{product.name}</h2>
+      <h2 className="fs-4">{product.name}</h2>
       {Object.entries(badgeInfo).map(([name, value]) => (
         <span
           key={name}

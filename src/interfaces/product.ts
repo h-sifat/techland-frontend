@@ -71,7 +71,16 @@ export type ListProductsQuery =
   | ({ qType: "list" } & FindProductArg)
   | ({ qType: "search" } & SearchProductsArg);
 
+type ScoreAndImageUrl = { imageUrl: string; score: number };
+
 export type ProductSearchSuggestionDocument = Pick<
   ProductPublicInterface,
   "_id" | "name"
-> & { imageUrl: string; score: number };
+> &
+  ScoreAndImageUrl;
+
+export type RelatedProductDocument = Pick<
+  ProductPublicInterface,
+  "_id" | "name" | "price" | "brand" | "priceUnit"
+> &
+  ScoreAndImageUrl;

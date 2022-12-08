@@ -1,13 +1,13 @@
-import { Query } from "../../util/query";
-import { QuerySchema } from "./query-validation";
-import { formatError } from "../../util/format-error";
-import type { ListProductsQuery } from "../../interfaces/product";
+import { formatError } from "./format-error";
+import { Query } from "./query";
 
-export type ParsedProductQueryResult =
-  | { success: true; value: ListProductsQuery }
+export type ParsedProductQueryResult<QueryType> =
+  | { success: true; value: QueryType }
   | { success: false; message: string };
 
-export function parseProductsQuery(): ParsedProductQueryResult {
+export function parseProductsQuery<QueryType>(
+  querySchema: any
+): ParsedProductQueryResult<QueryType> {
   let _query: any = { qType: "list" };
 
   const queryString = new URL(window.location.href).search;
@@ -18,7 +18,7 @@ export function parseProductsQuery(): ParsedProductQueryResult {
       return { success: false, message: ex.message };
     }
 
-  const validationResult = QuerySchema.safeParse(_query);
+  const validationResult = querySchema.safeParse(_query);
   if (!validationResult.success) {
     return {
       success: false,

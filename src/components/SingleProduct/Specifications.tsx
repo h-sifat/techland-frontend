@@ -8,7 +8,7 @@ export function Specifications(arg: Specifications_Argument) {
 
   return (
     <>
-      <h3 className="fs-6">Specifications</h3>
+      <h3 className="fs-4">Specifications</h3>
 
       {Object.entries(specifications).map(([groupName, descriptionObject]) => (
         <table key={groupName} className="table table-hover">

@@ -4,7 +4,7 @@ export interface ImageCarousel_Argument {
   urls: string[];
 }
 export function ImageCarousel(arg: ImageCarousel_Argument) {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const { urls } = arg;
   const carouselId = "product_images_carousel";
@@ -22,7 +22,7 @@ export function ImageCarousel(arg: ImageCarousel_Argument) {
   return (
     <div id={carouselId} className="carousel slide" data-bs-ride="true">
       <div className="carousel-indicators">
-        {urls.map((url, index) => (
+        {urls.map((_, index) => (
           <button
             key={index}
             type="button"

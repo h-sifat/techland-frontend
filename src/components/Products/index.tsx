@@ -1,11 +1,12 @@
 import hash from "object-hash";
+import { useReducer } from "react";
 import { Alert } from "../other/Alert";
 import { ProductCard } from "./ProductCard";
-import { useReducer } from "react";
-import { parseProductsQuery } from "./prase-products-query";
 import { useFetchData } from "../../util/hooks";
-import { FindResult } from "../../interfaces/product";
+import { QuerySchema } from "./query-validation";
 import { Pagination, Pagination_Argument } from "./Pagination";
+import { parseProductsQuery } from "../../util/prase-products-query";
+import { FindResult, ListProductsQuery } from "../../interfaces/product";
 import { processFetchedDataState } from "../../util/process-fetched-data";
 
 function reducer(state: any, action: any) {
@@ -21,7 +22,7 @@ function reducer(state: any, action: any) {
 }
 
 export function Products() {
-  const parsedQueryResult = parseProductsQuery();
+  const parsedQueryResult = parseProductsQuery<ListProductsQuery>(QuerySchema);
 
   if (!parsedQueryResult.success)
     return <Alert type="danger" message={`Invalid query string in url.`} />;

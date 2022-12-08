@@ -102,9 +102,6 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
                   >
                     <BsSearch />
                   </button>
-                  <Link href={"/products/" + Math.random().toString()}>
-                    Duck
-                  </Link>
                 </div>
               </form>
 
