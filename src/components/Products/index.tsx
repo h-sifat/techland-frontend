@@ -6,6 +6,7 @@ import { FetchedDataState } from "../../util/hooks";
 import { FindResult } from "../../interfaces/product";
 import { formatError } from "../../util/format-error";
 import { processFetchedDataState } from "../../util/process-fetched-data";
+import { ProductCard } from "./ProductCard";
 
 export function Products() {
   const query = useQueryState();
@@ -45,22 +46,21 @@ export function Products() {
 
   const productsResult = processFetchedDataState({
     state: productsState,
-    processLoadedData(findResult) {
-      const { minPrice, maxPrice } = findResult;
-      return (
-        <div>
-          <p>
-            Price, min: {minPrice}, max: {maxPrice}
-          </p>
-        </div>
-      );
-    },
+    processLoadedData,
   });
 
-  return (
-    <>
-      <h2>Products</h2>
-      {productsResult}
-    </>
-  );
+  function processLoadedData(findResult: FindResult) {
+    const { products } = findResult;
+    return (
+      <div className="row row-cols-auto g-3 justify-content-center">
+        {products.map((product) => (
+          <div className="mb-2" key={product._id}>
+            <ProductCard product={product} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return <>{productsResult}</>;
 }
