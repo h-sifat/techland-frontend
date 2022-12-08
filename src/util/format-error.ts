@@ -3,7 +3,7 @@ import type { API_Error_Response } from "../interfaces/api";
 export interface FormatError_Argument {
   errorResponse: API_Error_Response;
 }
-export function formatError(arg: FormatError_Argument) {
+export function formatError(arg: FormatError_Argument): string {
   const { errorResponse } = arg;
 
   if (errorResponse.errorType === "msgAndCode")
@@ -18,4 +18,7 @@ export function formatError(arg: FormatError_Argument) {
     const { fieldErrors } = errorResponse.error;
     for (const field in fieldErrors) return fieldErrors[field][0];
   }
+
+  // this line is just to satisfy typescript
+  return "";
 }
