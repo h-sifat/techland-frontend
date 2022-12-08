@@ -2,11 +2,13 @@ import { Query } from "./query";
 import { config } from "../config/index";
 import { joinUrlSegments } from "./url";
 
+import type { APICallResult } from "../interfaces/api";
+
 export interface API_Get_Argument {
   query: object;
   path: string | string[];
 }
-async function get(arg: API_Get_Argument) {
+async function get<T>(arg: API_Get_Argument): Promise<APICallResult<T>> {
   const { path, query } = arg;
 
   const url = (() => {
