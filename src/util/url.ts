@@ -1,3 +1,5 @@
+import { assert } from "handy-types";
+
 export interface JoinUrlSegments_Argument {
   segments: string[];
 }
@@ -15,4 +17,23 @@ export function joinUrlSegments(arg: JoinUrlSegments_Argument) {
   }
 
   return joined;
+}
+
+export interface GetPageUrl_Argument {
+  page: string | string[];
+}
+
+export function getPageUrl(arg: GetPageUrl_Argument) {
+  const { page } = arg;
+
+  assert<string | string[]>("non_empty_string | non_empty_string[]", page, {
+    name: "page",
+    code: "INVALID_PAGE",
+  });
+
+  const segments = [window.location.origin];
+  if (typeof page === "string") segments.push(page);
+  else segments.push(...page);
+
+  return joinUrlSegments({ segments });
 }

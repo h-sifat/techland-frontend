@@ -11,7 +11,7 @@ export type FetchedDataState<T> =
   | { status: "error"; message: string }
   | { status: "loaded"; data: T };
 
-export function useFetchData<ProcessedData, ResponseData>(
+export function useFetchData<ProcessedData, ResponseData = ProcessedData>(
   arg: UseFetchData_Argument<ProcessedData, ResponseData>
 ) {
   const { processResponseData = (v) => v } = arg;
