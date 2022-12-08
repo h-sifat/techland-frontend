@@ -7,6 +7,7 @@ import { BsSearch } from "react-icons/bs";
 import { formatError } from "../../util/format-error";
 import { LoadingSpinner } from "../other/LoadingSpinner";
 import { ProductSearchSuggestionDocument } from "../../interfaces/product";
+import { getPageUrl } from "../../util/url";
 
 export interface SearchModal_Argument {
   isShown: boolean;
@@ -46,6 +47,24 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
     });
   }
 
+  function closeModalAndResetQuery() {
+    setSearchResult(null);
+    setQuery("");
+    setIsShown(false);
+  }
+
+  function goToProductsPage(e?: any) {
+    if (e) e.preventDefault();
+
+    if (!query) return;
+    closeModalAndResetQuery();
+
+    window.location.href = getPageUrl({
+      page: "/products",
+      query: { qType: "search", query },
+    });
+  }
+
   return (
     <>
       <div
@@ -53,10 +72,8 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
         id={mainModalId}
         role="dialog"
         onKeyDown={(e) => {
-          if (e.key !== "Escape") return;
-          setSearchResult(null);
-          setQuery("");
-          setIsShown(false);
+          if (e.key === "Escape") return closeModalAndResetQuery();
+          if (e.key === "Enter") return goToProductsPage();
         }}
         onClick={(e) =>
           (e.target as any).id === mainModalId && setIsShown(false)
@@ -65,7 +82,7 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div className="modal-content">
             <div className="modal-body">
-              <form>
+              <form onSubmit={goToProductsPage}>
                 <div className="input-group mb-3">
                   <input
                     type="text"
@@ -75,13 +92,19 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
                     onChange={(e) => handleQueryChange((e.target as any).value)}
                     placeholder="Type your query here"
                   />
+
                   <button
-                    className="btn btn-outline-primary"
                     type="button"
+                    tabIndex={-1}
+                    onClick={goToProductsPage}
                     id="button-addon2"
+                    className="btn btn-outline-primary"
                   >
                     <BsSearch />
                   </button>
+                  <Link href={"/products/" + Math.random().toString()}>
+                    Duck
+                  </Link>
                 </div>
               </form>
 
@@ -113,9 +136,13 @@ export function SearchSuggestionsList(arg: SearchSuggestionsList_Argument) {
   const { suggestions } = searchResult;
   return (
     <ul className="list-group">
-      {suggestions.map((document, index) => (
+      {suggestions.map((document) => (
         <Link href="/product" key={document._id}>
-          <li tabIndex={index + 1} className="list-group-item text-primary">
+          <li
+            tabIndex={0}
+            className="list-group-item text-primary"
+            style={{ cursor: "pointer" }}
+          >
             {document.name}
           </li>
         </Link>
