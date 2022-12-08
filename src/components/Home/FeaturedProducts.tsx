@@ -1,68 +1,37 @@
-import { api } from "../../util/api";
-import { useEffect, useState } from "react";
-import { formatError } from "../../util/format-error";
-
-import { Alert } from "../other/Alert";
-import { LoadingSpinner } from "../other/LoadingSpinner";
-
 import type {
   FindResult,
   MinifiedPublicProductInterface,
 } from "../../interfaces/product";
 import { priceUnitMap } from "../../util/product";
-
-type FeaturedProductsState =
-  | { status: "loading"; data: null }
-  | { status: "error"; message: string }
-  | { status: "loaded"; data: FindResult["products"] };
+import { useFetchData } from "../../util/hooks";
+import { processFetchedDataState } from "../../util/process-fetched-data";
 
 export function FeaturedProducts() {
-  const [productsState, setProductsState] = useState<FeaturedProductsState>({
-    data: null,
-    status: "loading",
+  const productsState = useFetchData<
+    MinifiedPublicProductInterface[],
+    FindResult
+  >({
+    path: "products",
+    processResponseData: (data) => data.products,
+    query: { qType: "list", priceRange: { min: 400, max: 1000 } },
   });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await api.get<FindResult>({
-          path: "products",
-          query: { qType: "list", priceRange: { min: 300, max: 1000 } },
-        });
-
-        if (!response.success)
-          return setProductsState({
-            status: "error",
-            message: formatError({ errorResponse: response! }),
-          });
-
-        setProductsState({ status: "loaded", data: response.data.products });
-      } catch (ex) {
-        setProductsState({ status: "error", message: ex.message });
-      }
-    })();
-  }, []);
-
-  const productsResult = (() => {
-    switch (productsState.status) {
-      case "loading":
-        return <LoadingSpinner />;
-
-      case "error":
-        return <Alert message={productsState.message} type={"danger"} />;
-
-      default:
-        return (
-          <div className="row row-cols-auto g-3 justify-content-center">
-            {productsState.data.map((product) => (
-              <div className="" key={product._id}>
-                <FeaturedProductCard product={product} />
-              </div>
-            ))}
-          </div>
-        );
-    }
-  })();
+  const productsResult = processFetchedDataState<
+    MinifiedPublicProductInterface[]
+  >({
+    state: productsState,
+    processLoadedData(products) {
+      return (
+        <div className="row row-cols-auto g-3 justify-content-center">
+          {products.map((product) => (
+            <div className="" key={product._id}>
+              <FeaturedProductCard product={product} />
+            </div>
+          ))}
+        </div>
+      );
+    },
+  });
 
   return (
     <div className="container my-4">
