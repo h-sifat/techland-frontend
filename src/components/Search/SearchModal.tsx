@@ -1,4 +1,3 @@
-import { Link } from "wouter";
 import { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
 import { api } from "../../util/api";
@@ -131,19 +130,31 @@ export function SearchSuggestionsList(arg: SearchSuggestionsList_Argument) {
     return <Alert type="danger" message={searchResult.message} />;
 
   const { suggestions } = searchResult;
+
   return (
     <ul className="list-group">
-      {suggestions.map((document) => (
-        <Link href="/product" key={document._id}>
-          <li
-            tabIndex={0}
-            className="list-group-item text-primary"
-            style={{ cursor: "pointer" }}
+      {suggestions.map((product) => {
+        const productUrl = getPageUrl({
+          page: "/product",
+          query: { qType: "byIds", ids: [product._id] },
+        });
+
+        return (
+          <a
+            href={productUrl}
+            key={product._id}
+            className="text-decoration-none"
           >
-            {document.name}
-          </li>
-        </Link>
-      ))}
+            <li
+              tabIndex={0}
+              className="list-group-item text-primary"
+              style={{ cursor: "pointer" }}
+            >
+              {product.name}
+            </li>
+          </a>
+        );
+      })}
     </ul>
   );
 }
