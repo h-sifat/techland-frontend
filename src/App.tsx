@@ -5,11 +5,19 @@ import { NavBar } from "./components/Nav";
 import { Footer } from "./components/Footer";
 import { Home } from "./components/Home/index";
 import { Products } from "./components/Products";
+import { SearchModal } from "./components/Search/SearchModal";
+import { useState } from "react";
 
 export function App() {
+  const [isSearchModalShown, setIsSearchModalShown] = useState(false);
+
   return (
     <>
-      <NavBar />
+      <NavBar onSearchClick={() => setIsSearchModalShown(true)} />
+      <SearchModal
+        isShown={isSearchModalShown}
+        setIsShown={setIsSearchModalShown}
+      />
 
       <div className="container my-4 center" style={{ minHeight: "90vh" }}>
         <Route path="/" component={Home} />
