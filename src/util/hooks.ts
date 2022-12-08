@@ -4,6 +4,7 @@ import { api, API_Get_Argument } from "./api";
 
 export type UseFetchData_Argument<ProcessedData, ResponseData> = {
   processResponseData?: (data: ResponseData) => ProcessedData;
+  changeFlag?: string;
 } & API_Get_Argument;
 
 export type FetchedDataState<T> =
@@ -14,7 +15,7 @@ export type FetchedDataState<T> =
 export function useFetchData<ProcessedData, ResponseData = ProcessedData>(
   arg: UseFetchData_Argument<ProcessedData, ResponseData>
 ) {
-  const { processResponseData = (v) => v } = arg;
+  const { processResponseData = (v) => v, changeFlag = "not_changed" } = arg;
 
   const [state, setState] = useState<FetchedDataState<ProcessedData>>({
     status: "loading",
@@ -40,7 +41,7 @@ export function useFetchData<ProcessedData, ResponseData = ProcessedData>(
         setState({ status: "error", message: ex.message });
       }
     })();
-  }, []);
+  }, [changeFlag]);
 
   return state;
 }

@@ -57,8 +57,8 @@ export interface PaginationObject {
 
 export interface FindProductArg {
   categoryId?: string;
-  pagination?: PaginationObject;
-  sortBy?: { price: "1" | "-1" };
+  pagination: PaginationObject;
+  sortBy: { price: "1" | "-1" };
   priceRange?: { min?: number; max?: number };
 }
 

@@ -1,4 +1,5 @@
 import { assert } from "handy-types";
+import { Query } from "./query";
 
 export interface JoinUrlSegments_Argument {
   segments: string[];
@@ -21,10 +22,11 @@ export function joinUrlSegments(arg: JoinUrlSegments_Argument) {
 
 export interface GetPageUrl_Argument {
   page: string | string[];
+  query?: object;
 }
 
 export function getPageUrl(arg: GetPageUrl_Argument) {
-  const { page } = arg;
+  const { page, query } = arg;
 
   assert<string | string[]>("non_empty_string | non_empty_string[]", page, {
     name: "page",
@@ -35,5 +37,8 @@ export function getPageUrl(arg: GetPageUrl_Argument) {
   if (typeof page === "string") segments.push(page);
   else segments.push(...page);
 
-  return joinUrlSegments({ segments });
+  let url = joinUrlSegments({ segments });
+  if (query) url += Query.stringify(query);
+
+  return url;
 }

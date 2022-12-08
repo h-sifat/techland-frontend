@@ -16,7 +16,7 @@ export function NavBar(arg: NavBar_Argument) {
   if (!collapsed) collapsibleClassNames += " show";
 
   return (
-    <nav className="navbar navbar-expand-lg bg-light">
+    <nav className="navbar navbar-expand-lg bg-light fixed-top">
       <div className="container-fluid">
         <Link className="navbar-brand fw-bold" href="/">
           <GrTechnology size={"2rem"} /> Techland
