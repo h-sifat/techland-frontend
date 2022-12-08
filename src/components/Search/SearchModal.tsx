@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
 import { api } from "../../util/api";
 import { Alert } from "../other/Alert";
@@ -22,9 +22,14 @@ const delayedFetchSearchSuggestions = debounce(
 );
 
 export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
+  const ref = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
+
+  useEffect(() => {
+    if (isShown && ref.current) ref.current.focus();
+  });
 
   function handleQueryChange(input: string) {
     setQuery(input);
@@ -65,6 +70,7 @@ export function SearchModal({ isShown, setIsShown }: SearchModal_Argument) {
                   <input
                     type="text"
                     className="form-control"
+                    ref={ref}
                     value={query}
                     onChange={(e) => handleQueryChange((e.target as any).value)}
                     placeholder="Type your query here"
