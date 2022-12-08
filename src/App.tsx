@@ -1,4 +1,4 @@
-import { Route } from "wouter";
+import { Route, Switch } from "wouter";
 import { config } from "./config";
 
 import { NavBar } from "./components/Nav";
@@ -20,8 +20,13 @@ export function App() {
       />
 
       <div className="container my-4 center" style={{ minHeight: "90vh" }}>
-        <Route path="/" component={Home} />
-        <Route path={config.PRODUCTS_PAGE_PATH} component={Products} />
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path={config.PRODUCTS_PAGE_PATH} component={Products} />
+          <Route>
+            <h2>404 - Not Found</h2>
+          </Route>
+        </Switch>
       </div>
 
       <Footer />
